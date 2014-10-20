@@ -102,17 +102,13 @@ class HemeraServiceContainer(HemeraService):
         try:
             prover = self.get_prover_instance(id)
             prover.apply_rule_to_goal(goal, ruleId)
+            cmdParsed = yacc.parse("print")
+            proofRepr = prover.eval(cmdParsed)            
         except Exception, inst:
             msg = inst.__str__()
             return False, "", msg 
         else:
-            cmdParsed = yacc.parse("print")
-            proofRepr = prover.eval(cmdParsed)
-            return True, parseToSVG(proofRepr), prover.finalStatus  
-        
-        cmdParsed = yacc.parse("print")
-        proofRepr = prover.eval(cmdParsed)
-        return True, parseToSVG(proofRepr), prover.finalStatus              
+            return True, parseToSVG(proofRepr), prover.finalStatus                
     
     
     '''
@@ -128,16 +124,16 @@ class HemeraServiceContainer(HemeraService):
         return prover
     
     def exec_prover_cmd(self, id, cmd):
-        prover = self.get_prover_instance(id)
-        cmdParsed = yacc.parse(cmd)
         try:
-            prover.eval(cmdParsed)              
+            prover = self.get_prover_instance(id)
+            cmdParsed = yacc.parse(cmd)            
+            prover.eval(cmdParsed)  
+            cmdParsed = yacc.parse("print")
+            proofRepr = prover.eval(cmdParsed)                       
         except Exception, inst:
             msg = inst.__str__()
             return False, "", msg 
         else:
-            cmdParsed = yacc.parse("print")
-            proofRepr = prover.eval(cmdParsed)
             return True, parseToSVG(proofRepr), prover.finalStatus                        
 
     '''

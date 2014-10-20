@@ -14,11 +14,13 @@ class SequentProver:
         self._ROOT = None
         self._GOALS = []
         self._GRAPH = None
+        self.init_step_control()
+        
+    def init_step_control(self):
         self._currentGoal = 0
         self._currentRule = self.__NO_CURRENT_RULE        
         self._currentRules = []
-        self.finalStatus = "" 
-        
+        self.finalStatus = ""         
         
     def is_atomic(self, formula):
         if len(formula.get_childs()) == 0: return True
@@ -267,7 +269,7 @@ class SequentProver:
     def get_goal_id(self, goalStr):
         for n, g in enumerate(self._GOALS):
             gStr = self.string_from_goal(g)
-            if (goalStr == gStr):
+            if (goalStr.strip() == gStr.strip()):
                 return n 
             
             
@@ -313,6 +315,7 @@ class SequentProver:
             self._ROOT = self._GOALS[0]
         elif input[0] == 'run':
             print 'I will do my best...'
+            self.init_step_control()            
             self.run()
         elif input[0] == 'quit':
             print 'Bye.'
